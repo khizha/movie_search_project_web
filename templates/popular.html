@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Популярные запросы</title>
+</head>
+
+<body>
+
+<h1>
+    Топ-5 популярных запросов
+</h1>
+
+
+{% if results %}
+
+<table border="1">
+
+    <tr>
+        <th>№</th>
+        <th>Тип запроса</th>
+        <th>Параметры</th>
+        <th>Количество запросов</th>
+    </tr>
+
+
+    {% for item in results %}
+
+    <tr>
+
+        <td>
+            {{ loop.index }}
+        </td>
+
+        <td>
+            {{ item.search_type }}
+        </td>
+
+        <td>
+            {{ item.search_params }}
+        </td>
+
+        <td>
+            {{ item.requests_count }}
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+
+{% else %}
+
+<p>
+    Популярных запросов пока нет.
+</p>
+
+{% endif %}
+
+
+<br>
+
+<a href="/">
+    Вернуться в главное меню
+</a>
+
+
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск фильма</title>
+</head>
+<body>
+
+<h1>Поиск по ключевому слову</h1>
+
+<form method="post" autocomplete="off">
+
+    <label>Введите ключевое слово:</label>
+
+    <br><br>
+
+    <input type="text"
+           name="keyword"
+          placeholder="Например: Аватар">
+
+    <br><br>
+
+    <button type="submit">
+        Найти
+    </button>
+
+</form>
+
+{% if error %}
+
+<h3>
+    {{ error }}
+</h3>
+
+{% endif %}
+
+
+{% if movies %}
+
+<h2>
+    Результаты поиска по запросу: "{{ keyword }}"
+</h2>
+
+
+{% for movie in movies %}
+
+<div>
+
+    <h3>
+        {{ movie.title }}
+    </h3>
+
+
+    <p>
+        {{ movie.description }}
+    </p>
+
+
+    <p>
+        Год выпуска: {{ movie.release_year }}
+    </p>
+
+</div>
+
+<hr>
+
+
+{% endfor %}
+
+
+{% elif keyword %}
+
+<h2>
+    По вашему запросу ничего не найдено
+</h2>
+
+
+{% endif %}
+
+
+</body>
+</html>

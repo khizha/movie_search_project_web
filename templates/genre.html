@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск по жанру</title>
+</head>
+
+
+<body>
+<h1>
+    Поиск фильмов по жанру и году
+</h1>
+
+
+<form method="post">
+
+
+<label>
+    Выберите жанр:
+</label>
+
+
+<select
+        name="category_id"
+        id="category">
+
+{% for category in categories %}
+
+<option
+    value="{{ category.category_id }}"
+    {% if category.category_id|string == category_id|string %}selected{% endif %}
+>
+    {{ category.category }}
+    ({{ category.first_year }} - {{ category.last_year }})
+</option>
+
+{% endfor %}
+
+</select>
+
+
+<br><br>
+
+
+<label>
+    Год от:
+</label>
+
+<input
+    type="number"
+    name="year_from"
+    min="1925"
+    max="2026"
+    value="{{ year_from or '' }}"
+>
+
+
+<label>
+    Год до:
+</label>
+
+<input
+    type="number"
+    name="year_to"
+    min="1925"
+    max="2026"
+    value="{{ year_to or '' }}"
+>
+
+
+<br><br>
+
+
+<button type="submit">
+    Найти
+</button>
+
+
+</form>
+
+{% if error %}
+
+<h3>
+    {{ error }}
+</h3>
+
+{% endif %}
+
+{% if movies %}
+
+<h2>
+    Найденные фильмы:
+</h2>
+
+
+{% for movie in movies %}
+
+<div>
+
+<h3>
+{{ movie.title }}
+</h3>
+
+
+<p>
+{{ movie.description }}
+</p>
+
+
+<p>
+Год выпуска: {{ movie.release_year }}
+</p>
+
+
+</div>
+
+<hr>
+
+
+{% endfor %}
+
+{% if has_previous or has_next %}
+
+<div>
+
+    {% if has_previous %}
+        <a href="/genre?category_id={{ category_id }}&year_from={{ year_from }}&year_to={{ year_to }}&page={{ page - 1 }}">
+            Предыдущая
+        </a>
+    {% endif %}
+
+    <span>
+        Страница {{ page }}
+    </span>
+
+    {% if has_next %}
+        <a href="/genre?category_id={{ category_id }}&year_from={{ year_from }}&year_to={{ year_to }}&page={{ page + 1 }}">
+            Следующая
+        </a>
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+
+{% endif %}
+
+
+</body>
+
+</html>
