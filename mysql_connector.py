@@ -34,7 +34,8 @@ GET_FILMS_BY_CATEGORY_ID_AND_YEAR_QUERY = """
         USING (film_id)
     WHERE category_id = %s
         AND release_year BETWEEN %s AND %s
-    ORDER BY title;
+    ORDER BY title
+    LIMIT %s OFFSET %s;
     """
 
 # Список годов выпуска фильмов
@@ -124,19 +125,34 @@ def get_films_by_keyword(keyword):
     )
 
 
-def get_films_by_category_id_and_year(category_id, year_from, year_to):
+def get_films_by_category_id_and_year(
+    category_id,
+    year_from,
+    year_to,
+    limit,
+    offset):
     """
     Возвращает список фильмов выбранного жанра
     за указанный диапазон лет.
+    Результат ограничен указанным количеством фильмов
+    и начинается с указанной позиции.
 
     :param category_id: Идентификатор жанра.
     :param year_from: Начальный год.
     :param year_to: Конечный год.
+    :param limit: Максимальное количество фильмов в результате.
+    :param offset: Количество фильмов, которые нужно пропустить от начала списка найденных.
     :return: Список найденных фильмов.
     """
     return execute_query(
         GET_FILMS_BY_CATEGORY_ID_AND_YEAR_QUERY,
-        (category_id, year_from, year_to)
+        (
+            category_id,
+            year_from,
+            year_to,
+            limit,
+            offset
+        )
     )
 
 

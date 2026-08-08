@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from search_service import (
     search_by_keyword,
     get_categories,
@@ -6,6 +6,9 @@ from search_service import (
 )
 
 from mongo_logger import get_popular_searches, save_search_log
+
+# количество фильмов на странице при постраничном выводе
+RESULTS_PER_PAGE = 10
 
 app = Flask(__name__)
 
@@ -50,11 +53,17 @@ def search():
 @app.route("/genre", methods=["GET", "POST"])
 def genre():
 
-    categories = get_categories()
+    # проверяем, на какой мы странице. если в URL есть ?page, значит страница не первая.
+    # если page нет, значит это первая страница
+    page = request.args.get("page", 1, type=int)
 
-    # Номер страницы.
-    # Если page нет в URL — начинаем с первой страницы.
-    page = int(request.args.get("page", 1))
+    per_page = RESULTS_PER_PAGE
+
+    # page 1: offset=0, page 2: offset=10, page 3: offset=20
+    offset = (page - 1) * per_page
+
+
+    categories = get_categories()
 
     if request.method == "POST":
 
@@ -92,7 +101,35 @@ def genre():
     movies = search_by_category(
         category_id,
         year_from,
-        year_to
+        year_to,
+        per_page,
+        offset
+    )
+
+    # После нового поиска переходим на первую страницу
+    # и передаём параметры поиска в URL.
+    if request.method == "POST":
+        return redirect(
+            url_for(
+                "genre",
+                category_id=category_id,
+                year_from=year_from,
+                year_to=year_to,
+                page=1
+            )
+        )
+
+    # Передаём в шаблон результаты поиска и данные для постраничной навигации.
+    return render_template(
+        "genre.html",
+        categories=categories,
+        movies=movies,
+        category_id=category_id,
+        year_from=year_from,
+        year_to=year_to,
+        page=page,
+        has_previous=page > 1,
+        has_next=len(movies) == per_page
     )
 
     save_search_log(

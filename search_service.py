@@ -24,17 +24,24 @@ def get_categories() -> list[dict]:
     return get_categories_with_years()
 
 
-def search_by_category(category_id, year_from, year_to) -> list[dict]:
+def search_by_category(category_id, year_from, year_to, limit, offset) -> list[dict]:
     """
     Выполняет поиск фильмов по жанру и диапазону годов.
+
+    Результат ограничен указанным количеством фильмов
+    и начинается с указанной позиции.
 
     :param category_id: ID выбранного жанра.
     :param year_from: Начальный год диапазона.
     :param year_to: Конечный год диапазона.
+    :param limit: Максимальное количество фильмов.
+    :param offset: Количество пропускаемых фильмов.
     :return: Список найденных фильмов.
     """
     return get_films_by_category_id_and_year(
         category_id,
         year_from,
         year_to,
+        limit,
+        offset,
     )
