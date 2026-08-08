@@ -2,6 +2,7 @@ from mysql_connector import (
     get_films_by_keyword,
     get_categories_with_years,
     get_films_by_category_id_and_year,
+    get_films_count_by_category_id_and_year,
 )
 
 
@@ -44,4 +45,19 @@ def search_by_category(category_id, year_from, year_to, limit, offset) -> list[d
         year_to,
         limit,
         offset,
+    )
+
+def get_category_films_count(
+    category_id,
+    year_from,
+    year_to
+) -> int:
+    """
+    Возвращает количество фильмов
+    выбранного жанра за указанный диапазон лет.
+    """
+    return get_films_count_by_category_id_and_year(
+        category_id,
+        year_from,
+        year_to
     )

@@ -3,6 +3,7 @@ from search_service import (
     search_by_keyword,
     get_categories,
     search_by_category,
+    get_category_films_count,
 )
 
 from mongo_logger import get_popular_searches, save_search_log
@@ -106,9 +107,39 @@ def genre():
         offset
     )
 
+    # Получаем количество фильмов
+    total = get_category_films_count(
+        category_id,
+        year_from,
+        year_to
+    )
+
+    # Считаем, сколько страниц нужно для выводна всех фильмоы
+    # 60 фильмоы - 6 страниц, 61 фильм - 7 страниц...
+    total_pages = (total + per_page - 1) // per_page
+
+
+    # page 1 из 7 → Следующая есть
+    # page 2 из 7 → обе есть
+    # page 7 из 7 → Предыдущая есть, Следующей нет
+    has_previous = page > 1
+    has_next = page < total_pages
+
     # После нового поиска переходим на первую страницу
     # и передаём параметры поиска в URL.
     if request.method == "POST":
+
+        # POST происходит только при нажатии «Найти», поэтому сохраняем историю здесь
+        save_search_log(
+            "genre",
+            {
+                "category_id": category_id,
+                "year_from": year_from,
+                "year_to": year_to
+            },
+            total
+        )
+
         return redirect(
             url_for(
                 "genre",
@@ -119,6 +150,7 @@ def genre():
             )
         )
 
+
     # Передаём в шаблон результаты поиска и данные для постраничной навигации.
     return render_template(
         "genre.html",
@@ -128,47 +160,10 @@ def genre():
         year_from=year_from,
         year_to=year_to,
         page=page,
-        has_previous=page > 1,
-        has_next=len(movies) == per_page
-    )
-
-    save_search_log(
-        "genre",
-        {
-            "category_id": category_id,
-            "year_from": year_from,
-            "year_to": year_to
-        },
-        len(movies)
-    )
-
-    # Сколько фильмов показываем на одной странице
-    per_page = 10
-
-    # Вычисляем начало и конец нужной страницы
-    start = (page - 1) * per_page
-    end = start + per_page
-
-    # Берём только 10 фильмов для текущей страницы
-    page_movies = movies[start:end]
-
-    # Есть ли следующая страница?
-    has_next = end < len(movies)
-
-    # Есть ли предыдущая страница?
-    has_previous = page > 1
-
-    return render_template(
-        "genre.html",
-        categories=categories,
-        movies=page_movies,
-        page=page,
-        has_next=has_next,
         has_previous=has_previous,
-        category_id=category_id,
-        year_from=year_from,
-        year_to=year_to
+        has_next=has_next
     )
+
 
 
 @app.route("/popular")

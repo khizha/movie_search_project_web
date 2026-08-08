@@ -38,6 +38,16 @@ GET_FILMS_BY_CATEGORY_ID_AND_YEAR_QUERY = """
     LIMIT %s OFFSET %s;
     """
 
+# Количество фильмов выбранного жанра в указанном диапазоне лет
+GET_FILMS_COUNT_BY_CATEGORY_ID_AND_YEAR_QUERY = """
+    SELECT COUNT(*) AS total
+    FROM film AS f
+    JOIN film_category AS fc
+        USING (film_id)
+    WHERE category_id = %s
+        AND release_year BETWEEN %s AND %s;
+"""
+
 # Список годов выпуска фильмов
 GET_YEARS_QUERY = """
     SELECT DISTINCT release_year
@@ -155,6 +165,26 @@ def get_films_by_category_id_and_year(
         )
     )
 
+def get_films_count_by_category_id_and_year(
+    category_id,
+    year_from,
+    year_to
+):
+    """
+    Возвращает общее количество фильмов
+    выбранного жанра за указанный диапазон лет.
+
+    :param category_id: Идентификатор жанра.
+    :param year_from: Начальный год.
+    :param year_to: Конечный год.
+    :return: Количество найденных фильмов.
+    """
+    result = execute_query(
+        GET_FILMS_COUNT_BY_CATEGORY_ID_AND_YEAR_QUERY,
+        (category_id, year_from, year_to)
+    )
+
+    return result[0]["total"]
 
 def get_films_by_category_name_and_year(category_name, year_from, year_to):
     """
