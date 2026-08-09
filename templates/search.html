@@ -67,6 +67,29 @@
 
 {% endfor %}
 
+{% if has_previous or has_next %}
+
+<div>
+
+    {% if has_previous %}
+        <a href="/search?keyword={{ keyword }}&page={{ page - 1 }}">
+            Предыдущая
+        </a>
+    {% endif %}
+
+    <span>
+        Страница {{ page }}
+    </span>
+
+    {% if has_next %}
+        <a href="/search?keyword={{ keyword }}&page={{ page + 1 }}">
+            Следующая
+        </a>
+    {% endif %}
+
+</div>
+
+{% endif %}
 
 {% elif keyword %}
 

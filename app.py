@@ -4,6 +4,7 @@ from search_service import (
     get_categories,
     search_by_category,
     get_category_films_count,
+    get_keyword_films_count,
 )
 
 from mongo_logger import get_popular_searches, save_search_log
@@ -20,36 +21,81 @@ def home():
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
-    #return "<h2>Страница поиска по ключевому слову</h2>"
+
+    # Получаем номер текущей страницы из URL.
+    # Если page нет в URL — начинаем с первой страницы.
+    page = request.args.get("page", 1, type=int)
+
+    # Сколько фильмов показываем на одной странице.
+    per_page = RESULTS_PER_PAGE
+
+    # Вычисляем, сколько фильмов нужно пропустить.
+    # Страница 1: offset=0, страница 2: offset=10, страница 3: offset=20.
+    offset = (page - 1) * per_page
+
     if request.method == "POST":
+
         keyword = request.form["keyword"]
 
-        # нажали поиск при незаполненном ключевом слове
+        # Нажали поиск при незаполненном ключевом слове.
         if not keyword.strip():
             return render_template(
                 "search.html",
                 error="Введите слово для поиска"
             )
 
-        # Ищем фильмы в sql бд
-        movies = search_by_keyword(keyword)
+    else:
 
-        # Сохраняем информацию о поиске в MongoDB
+        # Получаем ключевое слово из URL при переходе между страницами.
+        keyword = request.args.get("keyword")
+
+        if not keyword:
+            return render_template("search.html")
+
+    # Ищем фильмы в SQL-базе.
+    movies = search_by_keyword(
+        keyword,
+        per_page,
+        offset
+    )
+
+    # Получаем общее количество фильмов,
+    # найденных по ключевому слову.
+    total = get_keyword_films_count(keyword)
+
+    # Считаем, сколько страниц нужно для вывода всех фильмов.
+    total_pages = (total + per_page - 1) // per_page
+
+    # Определяем наличие кнопок навигации.
+    has_previous = page > 1
+    has_next = page < total_pages
+
+    # Если пользователь выполнил новый поиск,
+    # сохраняем его в MongoDB и переходим на первую страницу.
+    if request.method == "POST":
+
         save_search_log(
             "keyword",
             {"keyword": keyword},
-            len(movies)
+            total
         )
 
-        return render_template(
-            "search.html",
-            keyword=keyword,
-            movies=movies
+        return redirect(
+            url_for(
+                "search",
+                keyword=keyword,
+                page=1
+            )
         )
 
-
-    return render_template("search.html")
-
+    return render_template(
+        "search.html",
+        keyword=keyword,
+        movies=movies,
+        page=page,
+        has_previous=has_previous,
+        has_next=has_next
+    )
 
 @app.route("/genre", methods=["GET", "POST"])
 def genre():

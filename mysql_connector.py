@@ -7,7 +7,15 @@ GET_FILMS_BY_KEYWORD_QUERY = """
     SELECT title, description, release_year
     FROM film
     WHERE title LIKE CONCAT('%', %s, '%')
-    ORDER BY title;
+    ORDER BY title
+    LIMIT %s OFFSET %s;
+    """
+
+# Подсчёт общего количества фильмов по ключевому слову
+GET_FILMS_COUNT_BY_KEYWORD_QUERY = """
+    SELECT COUNT(*) AS total
+    FROM film
+    WHERE title LIKE CONCAT('%', %s, '%');
     """
 
 # Поиск фильмов по названию жанра в указанном диапазоне лет
@@ -121,18 +129,36 @@ def execute_query(query, params=()):
             connection.close()
 
 
-def get_films_by_keyword(keyword):
+def get_films_by_keyword(keyword, limit, offset):
     """
-    Возвращает список фильмов,
+    Возвращает страницу фильмов,
     название которых содержит указанное ключевое слово.
 
     :param keyword: Ключевое слово для поиска.
     :return: Список найденных фильмов.
+    :param offset: Количество фильмов, которые нужно пропустить.
+    :return: Список фильмов для текущей страницы.
     """
     return execute_query(
         GET_FILMS_BY_KEYWORD_QUERY,
+        (keyword, limit, offset,)
+    )
+
+
+def get_films_count_by_keyword(keyword):
+    """
+    Возвращает общее количество фильмов,
+    название которых содержит указанное ключевое слово.
+
+    :param keyword: Ключевое слово для поиска.
+    :return: Общее количество найденных фильмов.
+    """
+    result = execute_query(
+        GET_FILMS_COUNT_BY_KEYWORD_QUERY,
         (keyword,)
     )
+
+    return result[0]["total"]
 
 
 def get_films_by_category_id_and_year(
@@ -142,7 +168,7 @@ def get_films_by_category_id_and_year(
     limit,
     offset):
     """
-    Возвращает список фильмов выбранного жанра
+    Возвращает страницу фильмов выбранного жанра
     за указанный диапазон лет.
     Результат ограничен указанным количеством фильмов
     и начинается с указанной позиции.
