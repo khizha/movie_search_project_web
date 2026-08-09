@@ -254,5 +254,22 @@ def popular():
     )
 
 
+@app.route("/recent")
+def recent():
+
+    results = get_recent_searches()
+
+    for item in results:
+        item["search_type_description"] = format_search_type(
+            item["search_type"]
+        )
+
+        item["search_description"] = format_search_description(item)
+
+    return render_template(
+        "recent.html",
+        results=results
+    )
+
 if __name__ == "__main__":
     app.run(debug=True)

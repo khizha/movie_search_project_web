@@ -183,12 +183,16 @@ def get_popular_searches() -> list[dict[str, Any]]:
 @log_mongo_errors([])
 def get_recent_searches(limit: int = 5) -> list[dict[str, Any]]:
     """
-    Возвращает список последних поисковых запросов.
+    Возвращает список последних уникальных поисковых запросов.
 
-    Запросы сортируются по времени выполнения в порядке убывания.
+    Запросы сортируются по времени выполнения.
+    Для каждого уникального сочетания типа и параметров запроса
+    берется последняя по времени выполненная запись.
+    Полученные запросы снова сортируются по времени
+    и ограничиваются указанным количеством.
 
-    :param limit: Максимальное количество записей.
-    :return: Список последних поисковых запросов.
+    :param limit: Максимальное количество уникальных запросов.
+    :return: Список последних уникальных поисковых запросов.
     """
     client = None
 
@@ -196,6 +200,31 @@ def get_recent_searches(limit: int = 5) -> list[dict[str, Any]]:
         client, collection = get_collection()
 
         pipeline = [
+            {
+                "$sort": {
+                    "created_at": -1
+                }
+            },
+            {
+                "$group": {
+                    "_id": {
+                        "search_type": "$search_type",
+                        "search_params": "$search_params",
+                    },
+                    "search_type": {
+                        "$first": "$search_type"
+                    },
+                    "search_params": {
+                        "$first": "$search_params"
+                    },
+                    "results_count": {
+                        "$first": "$results_count"
+                    },
+                    "created_at": {
+                        "$first": "$created_at"
+                    },
+                }
+            },
             {
                 "$sort": {
                     "created_at": -1
