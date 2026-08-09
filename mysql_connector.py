@@ -256,3 +256,4 @@ def get_categories_with_years():
     return execute_query(
         GET_CATEGORIES_WITH_YEARS_QUERY
     )
+

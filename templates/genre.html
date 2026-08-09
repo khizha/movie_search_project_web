@@ -29,6 +29,8 @@
 
 <option
     value="{{ category.category_id }}"
+    data-first-year="{{ category.first_year }}"
+    data-last-year="{{ category.last_year }}"
     {% if category.category_id|string == category_id|string %}selected{% endif %}
 >
     {{ category.category }}
@@ -50,8 +52,7 @@
 <input
     type="number"
     name="year_from"
-    min="1925"
-    max="2026"
+    id="year-from"
     value="{{ year_from or '' }}"
 >
 
@@ -63,8 +64,7 @@
 <input
     type="number"
     name="year_to"
-    min="1925"
-    max="2026"
+    id="year-to"
     value="{{ year_to or '' }}"
 >
 
@@ -147,7 +147,39 @@
 
 {% endif %}
 
+<script>
+    const categorySelect = document.getElementById("category");
+    const yearFrom = document.getElementById("year-from");
+    const yearTo = document.getElementById("year-to");
 
+    function updateYearRange() {
+        // Получаем выбранный жанр
+        const selectedOption =
+            categorySelect.options[categorySelect.selectedIndex];
+
+        // Получаем годы, доступные для этого жанра
+        const firstYear = selectedOption.dataset.firstYear;
+        const lastYear = selectedOption.dataset.lastYear;
+
+        // Устанавливаем допустимый диапазон для обоих полей
+        yearFrom.min = firstYear;
+        yearFrom.max = lastYear;
+
+        yearTo.min = firstYear;
+        yearTo.max = lastYear;
+
+        // При выборе нового жанра устанавливаем
+        // его минимальный и максимальный годы
+        yearFrom.value = firstYear;
+        yearTo.value = lastYear;
+    }
+
+    // При изменении жанра обновляем годы
+    categorySelect.addEventListener("change", updateYearRange);
+
+    // Устанавливаем диапазон при первой загрузке страницы
+    updateYearRange();
+</script>
 </body>
 
 </html>
