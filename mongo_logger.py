@@ -13,6 +13,9 @@ from local_settings import (
     MONGODB_URL_WRITE,
 )
 
+POPULAR_SEARCHES_LIMIT = 5
+RECENT_SEARCHES_LIMIT = 5
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
@@ -160,7 +163,7 @@ def get_popular_searches() -> list[dict[str, Any]]:
                 }
             },
             {
-                "$limit": 5
+                "$limit": POPULAR_SEARCHES_LIMIT
             },
             {
                 "$project": {
@@ -181,7 +184,7 @@ def get_popular_searches() -> list[dict[str, Any]]:
 
 
 @log_mongo_errors([])
-def get_recent_searches(limit: int = 5) -> list[dict[str, Any]]:
+def get_recent_searches(limit: int = RECENT_SEARCHES_LIMIT) -> list[dict[str, Any]]:
     """
     Возвращает список последних уникальных поисковых запросов.
 
