@@ -1,56 +1,53 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Популярные запросы</title>
-</head>
+{% block title %}
+Популярные запросы
+{% endblock %}
 
-<body>
+{% block content %}
 
 <h1>
     Топ-5 популярных запросов
 </h1>
 
-
 {% if results %}
 
 <table border="1">
 
-    <tr>
-        <th>№</th>
-        <th>Тип запроса</th>
-        <th>Параметры</th>
-        <th>Количество запросов</th>
-    </tr>
+```
+<tr>
+    <th>№</th>
+    <th>Тип запроса</th>
+    <th>Параметры</th>
+    <th>Количество запросов</th>
+</tr>
 
+{% for item in results %}
 
-    {% for item in results %}
+<tr>
 
-    <tr>
+    <td>
+        {{ loop.index }}
+    </td>
 
-        <td>
-            {{ loop.index }}
-        </td>
+    <td>
+        {{ item.search_type_description }}
+    </td>
 
-        <td>
-            {{ item.search_type_description }}
-        </td>
+    <td>
+        {{ item.search_description }}
+    </td>
 
-        <td>
-            {{ item.search_description }}
-        </td>
+    <td>
+        {{ item.requests_count }}
+    </td>
 
-        <td>
-            {{ item.requests_count }}
-        </td>
+</tr>
 
-    </tr>
-
-    {% endfor %}
+{% endfor %}
+```
 
 </table>
-
 
 {% else %}
 
@@ -60,14 +57,4 @@
 
 {% endif %}
 
-
-<br>
-
-<a href="/">
-    Вернуться в главное меню
-</a>
-
-
-</body>
-
-</html>
+{% endblock %}

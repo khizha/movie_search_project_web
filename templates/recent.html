@@ -1,17 +1,20 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html lang="ru">
+{% block title %}
+Последние уникальные запросы
+{% endblock %}
 
-<head> <meta charset="UTF-8"> <title>Последние уникальные запросы</title> </head>
+{% block content %}
 
-<body>
-
-<h1> Последние уникальные запросы </h1>
+<h1>
+    Последние уникальные запросы
+</h1>
 
 {% if results %}
 
 <table border="1">
 
+```
 <tr>
     <th>№</th>
     <th>Тип запроса</th>
@@ -19,7 +22,6 @@
     <th>Найдено фильмов</th>
     <th>Время</th>
 </tr>
-
 
 {% for item in results %}
 
@@ -48,19 +50,16 @@
 </tr>
 
 {% endfor %}
+```
 
 </table>
 
 {% else %}
 
-<p> Последних уникальных запросов пока нет. </p>
+<p>
+    Последних уникальных запросов пока нет.
+</p>
 
 {% endif %}
 
-<br>
-
-<a href="/"> Вернуться в главное меню </a>
-
-</body>
-
-</html>
+{% endblock %}
