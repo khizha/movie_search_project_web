@@ -7,7 +7,12 @@ from search_service import (
     get_keyword_films_count,
 )
 
-from mongo_logger import get_popular_searches, save_search_log
+from mongo_logger import get_popular_searches, get_recent_searches, save_search_log
+
+from formatters import (
+    format_search_description,
+    format_search_type,
+)
 
 # количество фильмов на странице при постраничном выводе
 RESULTS_PER_PAGE = 10
@@ -174,12 +179,19 @@ def genre():
     # После нового поиска переходим на первую страницу
     # и передаём параметры поиска в URL.
     if request.method == "POST":
+        # Находим название выбранного жанра по его ID.
+        category_name = next(
+            category["category"]
+            for category in categories
+            if str(category["category_id"]) == str(category_id)
+        )
 
-        # POST происходит только при нажатии «Найти», поэтому сохраняем историю здесь
+        # Сохраняем новый поиск в MongoDB
+        # в том же формате, что и консольное приложение.
         save_search_log(
-            "genre",
+            "category_name_and_year",
             {
-                "category_id": category_id,
+                "category_name": category_name,
                 "year_from": year_from,
                 "year_to": year_to
             },
@@ -195,7 +207,6 @@ def genre():
                 page=1
             )
         )
-
 
     # Передаём в шаблон результаты поиска и данные для постраничной навигации.
     return render_template(
@@ -216,6 +227,26 @@ def genre():
 def popular():
 
     results = get_popular_searches()
+
+    # categories = get_categories()
+    #
+    # category_names = {
+    #     str(category["category_id"]): category["category"]
+    #     for category in categories
+    # }
+
+    for item in results:
+        # if item["search_type"] == "genre":
+        #     category_id = str(item["search_params"]["category_id"])
+        #     item["search_params"]["category_name"] = (
+        #         category_names.get(category_id, "Неизвестный жанр")
+        #     )
+
+        item["search_type_description"] = format_search_type(
+            item["search_type"]
+        )
+
+        item["search_description"] = format_search_description(item)
 
     return render_template(
         "popular.html",
