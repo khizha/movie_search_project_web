@@ -170,9 +170,9 @@ def genre():
     total_pages = (total + per_page - 1) // per_page
 
 
-    # page 1 из 7 → Следующая есть
-    # page 2 из 7 → обе есть
-    # page 7 из 7 → Предыдущая есть, Следующей нет
+    # page 1 из 7:  следующая есть
+    # page 2 из 7:  есть и предыдущая, и следующая
+    # page 7 из 7:  предыдущая есть, следующей нет
     has_previous = page > 1
     has_next = page < total_pages
 
@@ -228,19 +228,7 @@ def popular():
 
     results = get_popular_searches()
 
-    # categories = get_categories()
-    #
-    # category_names = {
-    #     str(category["category_id"]): category["category"]
-    #     for category in categories
-    # }
-
     for item in results:
-        # if item["search_type"] == "genre":
-        #     category_id = str(item["search_params"]["category_id"])
-        #     item["search_params"]["category_name"] = (
-        #         category_names.get(category_id, "Неизвестный жанр")
-        #     )
 
         item["search_type_description"] = format_search_type(
             item["search_type"]
