@@ -1,209 +1,193 @@
 {% extends "base.html" %}
 
 {% block title %}
-Поиск по жанру
+    Поиск по жанру
 {% endblock %}
 
 {% block content %}
-
-<h1>
-    Поиск фильмов по жанру и году
-</h1>
-
-<form method="post">
-
-```
-<label>
-    Выберите жанр:
-</label>
-
-<select
-    name="category_id"
-    id="category"
->
-
-    {% for category in categories %}
-
-    <option
-        value="{{ category.category_id }}"
-        data-first-year="{{ category.first_year }}"
-        data-last-year="{{ category.last_year }}"
-        {% if category.category_id|string == category_id|string %}selected{% endif %}
+<div class="
+    min-vh-100
+    d-flex
+    justify-content-center
+    align-items-center
+">
+    <div
+        style="
+            width: 100%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 40px;
+        "
     >
-        {{ category.category }}
-        ({{ category.first_year }} - {{ category.last_year }})
-    </option>
+        <h1 class="mb-4">
+            Поиск фильмов по жанру и году
+        </h1>
 
-    {% endfor %}
+        <form method="post">
+            <div class="mb-3">
+                <label
+                    for="category"
+                    class="form-label"
+                >
+                    Выберите жанр:
+                </label>
+                <select
+                    name="category_id"
+                    id="category"
+                    class="form-select"
+                >
+                    {% for category in categories %}
+                    <option
+                        value="{{ category.category_id }}"
+                        data-first-year="{{ category.first_year }}"
+                        data-last-year="{{ category.last_year }}"
+                        {% if category.category_id|string == category_id|string %}selected{% endif %}
+                    >
+                        {{ category.category }}
+                        ({{ category.first_year }} - {{ category.last_year }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-</select>
+            <div class="row mb-3">
+                <div class="col">
+                    <label
+                        for="year-from"
+                        class="form-label"
+                    >
+                        Год от:
+                    </label>
+                    <input
+                        type="number"
+                        name="year_from"
+                        id="year-from"
+                        class="form-control"
+                        value="{{ year_from or '' }}"
+                    >
+                </div>
+                <div class="col">
+                    <label
+                        for="year-to"
+                        class="form-label"
+                    >
+                        Год до:
+                    </label>
+                    <input
+                        type="number"
+                        name="year_to"
+                        id="year-to"
+                        class="form-control"
+                        value="{{ year_to or '' }}"
+                    >
+                </div>
+            </div>
 
-<br><br>
+            <button
+                type="submit"
+                class="btn btn-dark"
+            >
+                Найти
+            </button>
+        </form>
 
-<label>
-    Год от:
-</label>
+        {% if error %}
+            <div class="alert alert-danger mt-4">
+                {{ error }}
+            </div>
+        {% endif %}
 
-<input
-    type="number"
-    name="year_from"
-    id="year-from"
-    value="{{ year_from or '' }}"
->
+        {% if movies %}
+            <h2 class="h4 mt-5 mb-4">
+                Найденные фильмы:
+            </h2>
 
-<label>
-    Год до:
-</label>
+            {% for movie in movies %}
+                <div
+                    class="mb-4 pb-3"
+                    style="border-bottom: 1px solid #dee2e6;"
+                >
+                    <h3 class="h5">
+                        {{ movie.title }}
+                    </h3>
+                    <p class="mb-2">
+                        {{ movie.description }}
+                    </p>
+                    <p class="text-muted mb-0">
+                        Год выпуска: {{ movie.release_year }}
+                    </p>
+                </div>
+            {% endfor %}
 
-<input
-    type="number"
-    name="year_to"
-    id="year-to"
-    value="{{ year_to or '' }}"
->
+            {% if has_previous or has_next %}
+                <div
+                    class="
+                        d-flex
+                        justify-content-center
+                        align-items-center
+                        gap-3
+                        mt-4
+                    "
+                >
+                    {% if has_previous %}
+                        <a
+                            href="/genre?category_id={{ category_id }}&year_from={{ year_from }}&year_to={{ year_to }}&page={{ page - 1 }}"
+                            class="btn btn-outline-dark"
+                        >
+                            Предыдущая
+                        </a>
+                    {% endif %}
 
-<br><br>
+                    <span>
+                        Страница {{ page }}
+                    </span>
 
-<button type="submit">
-    Найти
-</button>
-```
-
-</form>
-
-{% if error %}
-
-<h3>
-    {{ error }}
-</h3>
-
-{% endif %}
-
-{% if movies %}
-
-<h2>
-    Найденные фильмы:
-</h2>
-
-{% for movie in movies %}
-
-<div>
-
-```
-<h3>
-    {{ movie.title }}
-</h3>
-
-<p>
-    {{ movie.description }}
-</p>
-
-<p>
-    Год выпуска: {{ movie.release_year }}
-</p>
-```
-
+                    {% if has_next %}
+                        <a
+                            href="/genre?category_id={{ category_id }}&year_from={{ year_from }}&year_to={{ year_to }}&page={{ page + 1 }}"
+                            class="btn btn-outline-dark"
+                        >
+                            Следующая
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
 </div>
-
-<hr>
-
-{% endfor %}
-
-{% if has_previous or has_next %}
-
-<div>
-
-```
-{% if has_previous %}
-
-    <a href="/genre?category_id={{ category_id }}&year_from={{ year_from }}&year_to={{ year_to }}&page={{ page - 1 }}">
-        Предыдущая
-    </a>
-
-{% endif %}
-
-<span>
-    Страница {{ page }}
-</span>
-
-{% if has_next %}
-
-    <a href="/genre?category_id={{ category_id }}&year_from={{ year_from }}&year_to={{ year_to }}&page={{ page + 1 }}">
-        Следующая
-    </a>
-
-{% endif %}
-```
-
-</div>
-
-{% endif %}
-
-{% endif %}
 
 <script>
-
     const categorySelect =
         document.getElementById("category");
-
     const yearFrom =
         document.getElementById("year-from");
-
     const yearTo =
         document.getElementById("year-to");
 
-
     function updateYearRange() {
-
-        // Получаем выбранный жанр
         const selectedOption =
             categorySelect.options[
                 categorySelect.selectedIndex
             ];
 
-
-        // Получаем годы,
-        // доступные для выбранного жанра
         const firstYear =
             selectedOption.dataset.firstYear;
-
         const lastYear =
             selectedOption.dataset.lastYear;
-
-
-        // Устанавливаем допустимый диапазон
-        // для поля "Год от"
         yearFrom.min = firstYear;
         yearFrom.max = lastYear;
-
-
-        // Устанавливаем допустимый диапазон
-        // для поля "Год до"
         yearTo.min = firstYear;
         yearTo.max = lastYear;
-
-
-        // При выборе нового жанра
-        // автоматически устанавливаем
-        // его минимальный и максимальный годы
         yearFrom.value = firstYear;
         yearTo.value = lastYear;
-
     }
-
-
-    // При изменении жанра
-    // обновляем диапазон годов
     categorySelect.addEventListener(
         "change",
         updateYearRange
     );
 
-
-    // Устанавливаем диапазон годов
-    // при первой загрузке страницы
     updateYearRange();
-
 </script>
-
 {% endblock %}

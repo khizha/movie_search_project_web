@@ -1,95 +1,115 @@
 {% extends "base.html" %}
 
 {% block title %}
-Поиск фильма
+    Поиск фильма
 {% endblock %}
 
 {% block content %}
-
-<h1> Поиск по ключевому слову </h1>
-
-<form method="post" autocomplete="off">
-
-<label>
-    Введите ключевое слово:
-</label>
-
-<br><br>
-
-<input
-    type="text"
-    name="keyword"
-    placeholder="Например: Аватар"
->
-
-<br><br>
-
-<button type="submit">
-    Найти
-</button>
-
-</form>
-
-{% if error %}
-
-<h3> {{ error }} </h3>
-
-{% endif %}
-
-{% if movies %}
-
-<h2> Результаты поиска по запросу: "{{ keyword }}" </h2>
-
-{% for movie in movies %}
-
-<div>
-
-<h3>
-    {{ movie.title }}
-</h3>
-
-<p>
-    {{ movie.description }}
-</p>
-
-<p>
-    Год выпуска: {{ movie.release_year }}
-</p>
-
+<div class="
+    min-vh-100
+    d-flex
+    justify-content-center
+    align-items-center
+">
+    <div
+        style="
+            width: 100%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 40px;
+        "
+    >
+        <h1 class="mb-4">
+            Поиск по ключевому слову
+        </h1>
+        <form
+            method="post"
+            autocomplete="off"
+        >
+            <label
+                for="keyword"
+                class="form-label"
+            >
+                Введите ключевое слово:
+            </label>
+            <input
+                type="text"
+                id="keyword"
+                name="keyword"
+                class="form-control mb-3"
+                placeholder="Например: Аватар"
+            >
+            <button
+                type="submit"
+                class="btn btn-dark"
+            >
+                Найти
+            </button>
+        </form>
+        {% if error %}
+            <div class="alert alert-danger mt-4">
+                {{ error }}
+            </div>
+        {% endif %}
+        {% if movies %}
+            <h2 class="h4 mt-5 mb-4">
+                Результаты поиска по запросу:
+                "{{ keyword }}"
+            </h2>
+            {% for movie in movies %}
+                <div
+                    class="mb-4 pb-3"
+                    style="border-bottom: 1px solid #dee2e6;"
+                >
+                    <h3 class="h5">
+                        {{ movie.title }}
+                    </h3>
+                    <p class="mb-2">
+                        {{ movie.description }}
+                    </p>
+                    <p class="text-muted mb-0">
+                        Год выпуска: {{ movie.release_year }}
+                    </p>
+                </div>
+            {% endfor %}
+            {% if has_previous or has_next %}
+                <div
+                    class="
+                        d-flex
+                        justify-content-center
+                        align-items-center
+                        gap-3
+                        mt-4
+                    "
+                >
+                    {% if has_previous %}
+                        <a
+                            href="/search?keyword={{ keyword }}&page={{ page - 1 }}"
+                            class="btn btn-outline-dark"
+                        >
+                            Предыдущая
+                        </a>
+                    {% endif %}
+                    <span>
+                        Страница {{ page }}
+                    </span>
+                    {% if has_next %}
+                        <a
+                            href="/search?keyword={{ keyword }}&page={{ page + 1 }}"
+                            class="btn btn-outline-dark"
+                        >
+                            Следующая
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% elif keyword %}
+            <div class="alert alert-secondary mt-4">
+                По вашему запросу ничего не найдено
+            </div>
+        {% endif %}
+    </div>
 </div>
-
-<hr>
-
-{% endfor %}
-
-{% if has_previous or has_next %}
-
-<div>
-
-{% if has_previous %}
-    <a href="/search?keyword={{ keyword }}&page={{ page - 1 }}">
-        Предыдущая
-    </a>
-{% endif %}
-
-<span>
-    Страница {{ page }}
-</span>
-
-{% if has_next %}
-    <a href="/search?keyword={{ keyword }}&page={{ page + 1 }}">
-        Следующая
-    </a>
-{% endif %}
-
-</div>
-
-{% endif %}
-
-{% elif keyword %}
-
-<h2> По вашему запросу ничего не найдено </h2>
-
-{% endif %}
-
 {% endblock %}

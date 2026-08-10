@@ -1,47 +1,53 @@
 {% extends "base.html" %}
 
 {% block title %}
-ПОИСК ФИЛЬМОВ
+    Поиск фильмов
 {% endblock %}
 
+
 {% block content %}
-
-<h1>
-    ПОИСК ФИЛЬМОВ
-</h1>
-
-<p>
-    Выберите действие:
-</p>
-
-<ul>
-
-```
-<li>
-    <a href="/search">
-        Поиск по ключевому слову
-    </a>
-</li>
-
-<li>
-    <a href="/genre">
-        Поиск по жанру и диапазону годов выпуска
-    </a>
-</li>
-
-<li>
-    <a href="/popular">
-        Популярные запросы
-    </a>
-</li>
-
-<li>
-    <a href="/recent">
-        Последние уникальные запросы
-    </a>
-</li>
-```
-
-</ul>
+<div class="
+    min-vh-100
+    d-flex
+    flex-column
+    justify-content-center
+    align-items-center
+">
+    <h1
+        class="
+            home-title
+            text-center
+            mb-5
+        "
+    >
+        ПОИСК ФИЛЬМОВ
+    </h1>
+    <nav class="menu">
+        <a
+            href="/search"
+            class="menu-link mb-3"
+        >
+            Поиск по ключевому слову
+        </a>
+        <a
+            href="/genre"
+            class="menu-link mb-3"
+        >
+            Поиск по жанру и диапазону годов выпуска
+        </a>
+        <a
+            href="/popular"
+            class="menu-link mb-3"
+        >
+            Популярные запросы
+        </a>
+        <a
+            href="/recent"
+            class="menu-link"
+        >
+            Последние уникальные запросы
+        </a>
+    </nav>
+</div>
 
 {% endblock %}
