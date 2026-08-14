@@ -113,9 +113,15 @@ def save_search_log(
     try:
         client, collection = get_collection()
 
+        normalized_search_params = search_params.copy()
+        if search_type == "keyword":
+            normalized_search_params["keyword"] = (
+                normalized_search_params["keyword"].lower()
+            )
+
         document = {
             "search_type": search_type,
-            "search_params": search_params,
+            "search_params": normalized_search_params,
             "results_count": results_count,
             "created_at": datetime.now(),
         }
