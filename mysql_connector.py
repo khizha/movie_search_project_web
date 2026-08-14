@@ -6,7 +6,7 @@ from local_settings import dbconfig
 GET_FILMS_BY_KEYWORD_QUERY = """
     SELECT title, description, release_year
     FROM film
-    WHERE title LIKE CONCAT('%', %s, '%')
+    WHERE LOWER(title) LIKE CONCAT('%', LOWER(%s), '%')
     ORDER BY title
     LIMIT %s OFFSET %s;
     """
@@ -15,7 +15,7 @@ GET_FILMS_BY_KEYWORD_QUERY = """
 GET_FILMS_COUNT_BY_KEYWORD_QUERY = """
     SELECT COUNT(*) AS total
     FROM film
-    WHERE title LIKE CONCAT('%', %s, '%');
+    WHERE LOWER(title) LIKE CONCAT('%', LOWER(%s), '%');
     """
 
 
