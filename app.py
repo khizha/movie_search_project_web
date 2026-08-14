@@ -97,6 +97,8 @@ def search():
         "search.html",
         keyword=keyword,
         movies=movies,
+        total=total,
+        per_page=per_page,
         page=page,
         has_previous=has_previous,
         has_next=has_next
@@ -213,6 +215,8 @@ def genre():
         "genre.html",
         categories=categories,
         movies=movies,
+        total=total,
+        per_page=per_page,
         category_id=category_id,
         year_from=year_from,
         year_to=year_to,

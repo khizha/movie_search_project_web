@@ -40,6 +40,7 @@
                 name="keyword"
                 class="form-control mb-3"
                 placeholder="Например: Аватар"
+                value="{{ keyword or '' }}"
             >
             <button
                 type="submit"
@@ -53,11 +54,25 @@
                 {{ error }}
             </div>
         {% endif %}
+
         {% if movies %}
             <h2 class="h4 mt-5 mb-4">
                 Результаты поиска по запросу:
                 "{{ keyword }}"
             </h2>
+
+            {% if has_previous or has_next %}
+                <p class="text-muted">
+                    Показано фильмов:
+                    {{ (page - 1) * per_page  + 1 }}–{{ (page - 1) * per_page  + movies|length }}
+                    из {{ total }}
+                </p>
+            {% else %}
+                <p class="text-muted">
+                    Найдено фильмов: {{ total }}
+                </p>
+            {% endif %}
+
             {% for movie in movies %}
                 <div
                     class="mb-4 pb-3"
