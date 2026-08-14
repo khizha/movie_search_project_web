@@ -1,0 +1,228 @@
+            <svg
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+    >
+
+        <!-- Градиенты для прожектора -->
+
+        <defs>
+
+            <linearGradient
+                id="spotlightGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+            >
+
+                <stop
+                    offset="0%"
+                    stop-color="#30373d"
+                    stop-opacity="0.94"
+                />
+
+                <stop
+                    offset="16%"
+                    stop-color="#505a62"
+                    stop-opacity="0.90"
+                />
+
+                <stop
+                    offset="30%"
+                    stop-color="#737e86"
+                    stop-opacity="0.86"
+                />
+
+                <stop
+                    offset="40%"
+                    stop-color="#a8b0b5"
+                    stop-opacity="0.84"
+                />
+
+                <stop
+                    offset="44%"
+                    stop-color="#d7dbdd"
+                    stop-opacity="0.86"
+                />
+
+                <stop
+                    offset="50%"
+                    stop-color="#ffffff"
+                    stop-opacity="0.90"
+                />
+
+                <stop
+                    offset="56%"
+                    stop-color="#d7dbdd"
+                    stop-opacity="0.86"
+                />
+
+                <stop
+                    offset="64%"
+                    stop-color="#a0a9af"
+                    stop-opacity="0.88"
+                />
+
+                <stop
+                    offset="74%"
+                    stop-color="#68737b"
+                    stop-opacity="0.90"
+                />
+
+                <stop
+                    offset="86%"
+                    stop-color="#475159"
+                    stop-opacity="0.93"
+                />
+
+                <stop
+                    offset="100%"
+                    stop-color="#293138"
+                    stop-opacity="0.96"
+                />
+
+            </linearGradient>
+
+
+            <linearGradient
+                id="longitudinalGradient"
+                x1="100%"
+                y1="0%"
+                x2="0%"
+                y2="100%"
+            >
+
+                <stop
+                    offset="0%"
+                    stop-color="#252c32"
+                    stop-opacity="0.52"
+                />
+
+                <stop
+                    offset="12%"
+                    stop-color="#414a51"
+                    stop-opacity="0.42"
+                />
+
+                <stop
+                    offset="25%"
+                    stop-color="#5b656d"
+                    stop-opacity="0.30"
+                />
+
+                <stop
+                    offset="42%"
+                    stop-color="#6e7880"
+                    stop-opacity="0.16"
+                />
+
+                <stop
+                    offset="65%"
+                    stop-color="#6e7880"
+                    stop-opacity="0.07"
+                />
+
+                <stop
+                    offset="100%"
+                    stop-color="#6e7880"
+                    stop-opacity="0"
+                />
+
+            </linearGradient>
+
+
+            <linearGradient
+                id="innerLightGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+            >
+
+                <stop
+                    offset="0%"
+                    stop-color="#ffffff"
+                    stop-opacity="0.04"
+                />
+
+                <stop
+                    offset="36%"
+                    stop-color="#f4f5f5"
+                    stop-opacity="0.08"
+                />
+
+                <stop
+                    offset="43%"
+                    stop-color="#f8f9f9"
+                    stop-opacity="0.13"
+                />
+
+                <stop
+                    offset="50%"
+                    stop-color="#ffffff"
+                    stop-opacity="0.20"
+                />
+
+                <stop
+                    offset="57%"
+                    stop-color="#f8f9f9"
+                    stop-opacity="0.13"
+                />
+
+                <stop
+                    offset="64%"
+                    stop-color="#f4f5f5"
+                    stop-opacity="0.08"
+                />
+
+                <stop
+                    offset="100%"
+                    stop-color="#ffffff"
+                    stop-opacity="0.04"
+                />
+
+            </linearGradient>
+
+        </defs>
+
+
+        <!-- Основной луч прожектора -->
+
+        <polygon
+            points="
+                100,0
+                0,72
+                0,100
+                28,100
+            "
+            fill="url(#spotlightGradient)"
+        />
+
+
+        <!-- Затемнение луча -->
+
+        <polygon
+            points="
+                100,0
+                0,72
+                0,100
+                28,100
+            "
+            fill="url(#longitudinalGradient)"
+        />
+
+
+        <!-- Свет внутри луча -->
+
+        <polygon
+            points="
+                100,0
+                0,72
+                0,100
+                28,100
+            "
+            fill="url(#innerLightGradient)"
+        />
+
+    </svg>
