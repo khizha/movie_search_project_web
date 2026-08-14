@@ -12,6 +12,7 @@
     align-items-center
 ">
     <div
+        class="search-card"
         style="
             width: 100%;
             max-width: 700px;
@@ -73,6 +74,7 @@
                 </p>
             {% endif %}
 
+            <div class="movie-results">
             {% for movie in movies %}
                 <div
                     class="mb-4 pb-3"
@@ -89,6 +91,9 @@
                     </p>
                 </div>
             {% endfor %}
+
+             </div>
+
             {% if has_previous or has_next %}
                 <div
                     class="

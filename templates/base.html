@@ -60,12 +60,18 @@
     <!-- =========================
          ОСНОВНОЕ СОДЕРЖИМОЕ
          ========================= -->
-
     <main class="page-content container min-vh-100">
 
         {% block content %}
         {% endblock %}
 
+        <nav class="site-nav">
+            <a href="/">Главная</a>
+            <a href="/search">Поиск</a>
+            <a href="/genre">Жанры</a>
+            <a href="/popular">Популярные</a>
+            <a href="/recent">Последние</a>
+        </nav>
     </main>
 
 

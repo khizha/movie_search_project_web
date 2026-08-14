@@ -87,3 +87,36 @@
         border-color: #adb5bd;
         transform: translateY(-2px);
     }
+
+    .site-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 20px;
+
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .site-nav a {
+        color: #6c757d;
+        font-size: 0.9rem;
+        text-decoration: none;
+    }
+
+    .site-nav a:hover {
+        color: #343a40;
+    }
+
+    .movie-results {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .search-card {
+        max-height: calc(100vh - 60px);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
