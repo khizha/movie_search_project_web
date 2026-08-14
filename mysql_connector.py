@@ -197,21 +197,6 @@ def get_films_count_by_category_id_and_year(
 
     return result[0]["total"]
 
-# def get_films_by_category_name_and_year(category_name, year_from, year_to):
-#     """
-#     Возвращает список фильмов выбранного жанра
-#     за указанный диапазон лет.
-#
-#     :param category_name: Название жанра.
-#     :param year_from: Начальный год.
-#     :param year_to: Конечный год.
-#     :return: Список найденных фильмов.
-#     """
-#     return execute_query(
-#         GET_FILMS_BY_CATEGORY_NAME_AND_YEARS_QUERY,
-#         (category_name, year_from, year_to)
-#     )
-
 
 def get_years():
     """
