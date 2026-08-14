@@ -18,21 +18,6 @@ GET_FILMS_COUNT_BY_KEYWORD_QUERY = """
     WHERE title LIKE CONCAT('%', %s, '%');
     """
 
-# # Поиск фильмов по названию жанра в указанном диапазоне лет
-# GET_FILMS_BY_CATEGORY_NAME_AND_YEARS_QUERY = """
-#     SELECT f.title,
-#         f.description,
-#         f.release_year,
-#         c.name AS category
-#     FROM film AS f
-#     JOIN film_category AS fc
-#         ON f.film_id = fc.film_id
-#     JOIN category AS c
-#         ON fc.category_id = c.category_id
-#     WHERE c.name = %s
-#         AND f.release_year BETWEEN %s AND %s
-#     ORDER BY title;
-#     """
 
 # Поиск фильмов по ID жанра в указанном диапазоне лет
 GET_FILMS_BY_CATEGORY_ID_AND_YEAR_QUERY = """
