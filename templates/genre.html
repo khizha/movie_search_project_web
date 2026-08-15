@@ -95,7 +95,9 @@
         </form>
 
         {% if error %}
-            <div class="alert alert-danger mt-4">
+            <div
+                id="genre-error"
+                class="alert alert-danger mt-4">
                 {{ error }}
             </div>
         {% endif %}
@@ -172,8 +174,10 @@
                 </div>
             {% endif %}
         {% endif %}
-        {% if not movies and category_id and not error  %}
-            <div class="alert alert-secondary mt-4">
+        {% if not movies and category_id and not error %}
+            <div
+                id="genre-empty"
+                class="alert alert-secondary mt-4">
                 По вашему запросу ничего не найдено
             </div>
         {% endif %}
@@ -213,9 +217,24 @@
             }
         }
         categorySelect.addEventListener(
-            "change",
-            updateYearRange
-        );
+        "change",
+        () => {
+            const errorMessage =
+                document.getElementById("genre-error");
+
+            const emptyMessage =
+                document.getElementById("genre-empty");
+
+            if (errorMessage) {
+                errorMessage.remove();
+            }
+
+            if (emptyMessage) {
+                emptyMessage.remove();
+            }
+        updateYearRange(true);
+    }
+);
 
     updateYearRange();
 </script>
