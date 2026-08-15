@@ -172,7 +172,7 @@
                 </div>
             {% endif %}
         {% endif %}
-        {% if not movies and category_id %}
+        {% if not movies and category_id and not error  %}
             <div class="alert alert-secondary mt-4">
                 По вашему запросу ничего не найдено
             </div>
@@ -188,34 +188,34 @@
     const yearTo =
         document.getElementById("year-to");
 
-    function updateYearRange() {
-        const selectedOption =
-            categorySelect.options[
-                categorySelect.selectedIndex
-            ];
+        function updateYearRange(resetValues = false) {
+            const selectedOption =
+                categorySelect.options[
+                    categorySelect.selectedIndex
+                ];
 
-        const firstYear =
-            selectedOption.dataset.firstYear;
-        const lastYear =
-            selectedOption.dataset.lastYear;
+            const firstYear =
+                selectedOption.dataset.firstYear;
+            const lastYear =
+                selectedOption.dataset.lastYear;
 
-        yearFrom.min = firstYear;
-        yearFrom.max = lastYear;
-        yearTo.min = firstYear;
-        yearTo.max = lastYear;
+            yearFrom.min = firstYear;
+            yearFrom.max = lastYear;
+            yearTo.min = firstYear;
+            yearTo.max = lastYear;
 
-        if (!yearFrom.value) {
-            yearFrom.value = firstYear;
+            if (resetValues || !yearFrom.value) {
+                yearFrom.value = firstYear;
+            }
+
+            if (resetValues || !yearTo.value) {
+                yearTo.value = lastYear;
+            }
         }
-
-        if (!yearTo.value) {
-            yearTo.value = lastYear;
-        }
-    }
-    categorySelect.addEventListener(
-        "change",
-        updateYearRange
-    );
+        categorySelect.addEventListener(
+            "change",
+            updateYearRange
+        );
 
     updateYearRange();
 </script>

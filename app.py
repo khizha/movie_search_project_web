@@ -148,6 +148,7 @@ def genre():
             "genre.html",
             categories=categories,
             error="Начальный год не может быть больше конечного",
+            category_id=category_id,
             year_from=year_from,
             year_to=year_to
         )
