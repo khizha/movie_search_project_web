@@ -115,8 +115,15 @@
     }
 
     .search-card {
-        max-height: calc(100vh - 60px);
+        max-height: calc(100vh - 90px);
         overflow: hidden;
         display: flex;
         flex-direction: column;
     }
+
+    @media (max-height: 700px) {
+    .search-card {
+        max-height: calc(100vh - 60px);
+        padding: 25px;
+    }
+}

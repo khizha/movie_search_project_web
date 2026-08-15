@@ -12,6 +12,7 @@
     align-items-center
 ">
     <div
+        class="search-card"
         style="
             width: 100%;
             max-width: 700px;
@@ -100,7 +101,7 @@
         {% endif %}
 
         {% if movies %}
-            <h2 class="h4 mt-5 mb-4">
+            <h2 class="h4 mt-3 mb-4">
                 Найденные фильмы:
             </h2>
 
@@ -116,22 +117,26 @@
                 </p>
             {% endif %}
 
-            {% for movie in movies %}
-                <div
-                    class="mb-4 pb-3"
-                    style="border-bottom: 1px solid #dee2e6;"
-                >
-                    <h3 class="h5">
-                        {{ movie.title }}
-                    </h3>
-                    <p class="mb-2">
-                        {{ movie.description }}
-                    </p>
-                    <p class="text-muted mb-0">
-                        Год выпуска: {{ movie.release_year }}
-                    </p>
-                </div>
-            {% endfor %}
+            <div class="movie-results">
+
+                {% for movie in movies %}
+                    <div
+                        class="mb-4 pb-3"
+                        style="border-bottom: 1px solid #dee2e6;"
+                    >
+                        <h3 class="h5">
+                            {{ movie.title }}
+                        </h3>
+                        <p class="mb-2">
+                            {{ movie.description }}
+                        </p>
+                        <p class="text-muted mb-0">
+                            Год выпуска: {{ movie.release_year }}
+                        </p>
+                    </div>
+                {% endfor %}
+
+             </div>
 
             {% if has_previous or has_next %}
                 <div
