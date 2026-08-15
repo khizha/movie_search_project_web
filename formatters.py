@@ -72,3 +72,17 @@ def format_search_type(search_type: str) -> str:
     #     return "По жанру"
 
     return search_type
+
+
+if __name__ == "__main__":
+    item = {
+        "search_type": "keyword",
+        "search_params": {
+            "keyword": "ant"
+        }
+    }
+
+    print("Formatters smoke test:")
+    print(f"Параметры: {format_search_params(item)}")
+    print(f"Описание: {format_search_description(item)}")
+    print(f"Тип поиска: {format_search_type(item['search_type'])}")

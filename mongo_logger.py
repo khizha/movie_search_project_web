@@ -260,3 +260,13 @@ def get_recent_searches(limit: int = RECENT_SEARCHES_LIMIT) -> list[dict[str, An
     finally:
         if client:
             client.close()
+
+
+if __name__ == "__main__":
+    result = get_recent_searches()
+
+    print("MongoDB smoke test:")
+    print(f"Получено последних поисковых запросов: {len(result)}")
+
+    for item in result:
+        print(f"- {item['search_type']}: {item['search_params']}")

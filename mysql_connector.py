@@ -228,3 +228,11 @@ def get_categories_with_years():
         GET_CATEGORIES_WITH_YEARS_QUERY
     )
 
+
+if __name__ == "__main__":
+    result = get_films_by_keyword("ant", 5, 0)
+    print("MySQL smoke test:")
+    print(f"Найдено фильмов: {len(result)}")
+
+    for film in result:
+        print(f"- {film['title']} ({film['release_year']})")
