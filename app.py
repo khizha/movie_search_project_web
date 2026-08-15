@@ -42,11 +42,12 @@ def search():
 
         keyword = request.form["keyword"]
 
-        # Нажали поиск при незаполненном ключевом слове.
+        # Поиск при незаполненном ключевом слове
+        # или пробелах вместо слова.
         if not keyword.strip():
             return render_template(
                 "search.html",
-                error="Введите слово для поиска"
+                error="Ключевое слово не может быть пустым"
             )
 
     else:
