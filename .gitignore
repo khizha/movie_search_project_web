@@ -11,6 +11,9 @@ env/
 # Local settings
 local_settings.py
 
+# Temporary log file
+error.log
+
 # Environment variables
 .env
 .env.*
