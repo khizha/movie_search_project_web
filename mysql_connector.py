@@ -159,7 +159,8 @@ def get_films_by_category_id_and_year(
     year_from,
     year_to,
     limit,
-    offset):
+    offset
+):
     """
     Возвращает страницу фильмов выбранного жанра
     за указанный диапазон лет.
@@ -184,6 +185,7 @@ def get_films_by_category_id_and_year(
             offset
         )
     )
+
 
 def get_films_count_by_category_id_and_year(
     category_id,

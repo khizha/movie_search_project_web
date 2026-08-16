@@ -37,7 +37,13 @@ def get_categories() -> list[dict]:
     return get_categories_with_years()
 
 
-def search_by_category(category_id, year_from, year_to, limit, offset) -> list[dict]:
+def search_by_category(
+        category_id,
+        year_from,
+        year_to,
+        limit,
+        offset
+) -> list[dict]:
     """
     Выполняет поиск фильмов по жанру и диапазону годов.
 
@@ -58,6 +64,7 @@ def search_by_category(category_id, year_from, year_to, limit, offset) -> list[d
         limit,
         offset,
     )
+
 
 def get_category_films_count(
     category_id,

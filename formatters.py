@@ -56,6 +56,7 @@ def format_search_description(item: dict) -> str:
 
     return str(p)
 
+
 def format_search_type(search_type: str) -> str:
     """
     Возвращает тип поискового запроса

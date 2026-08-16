@@ -182,7 +182,9 @@ def get_popular_searches() -> list[dict[str, Any]]:
 
 
 @log_mongo_errors([], raise_error=True)
-def get_recent_searches(limit: int = RECENT_SEARCHES_LIMIT) -> list[dict[str, Any]]:
+def get_recent_searches(
+        limit: int = RECENT_SEARCHES_LIMIT
+) -> list[dict[str, Any]]:
     """
     Возвращает список последних уникальных поисковых запросов.
 

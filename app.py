@@ -9,7 +9,10 @@ from search_service import (
 
 import mysql.connector
 
-from mongo_logger import get_popular_searches, get_recent_searches, save_search_log
+from mongo_logger import (
+    get_popular_searches,
+    get_recent_searches,
+    save_search_log)
 
 from pymongo.errors import PyMongoError
 
@@ -21,7 +24,9 @@ from formatters import (
 # количество фильмов на странице при постраничном выводе
 RESULTS_PER_PAGE = 10
 
+
 app = Flask(__name__)
+
 
 @app.route("/")
 def home():
@@ -118,7 +123,8 @@ def search():
 @app.route("/genre", methods=["GET", "POST"])
 def genre():
 
-    # проверяем, на какой мы странице. если в URL есть ?page, значит страница не первая.
+    # проверяем, на какой мы странице. если в URL есть ?page,
+    # значит страница не первая.
     # если page нет, значит это первая страница
     page = request.args.get("page", 1, type=int)
 
@@ -195,7 +201,6 @@ def genre():
     # 60 фильмоы - 6 страниц, 61 фильм - 7 страниц...
     total_pages = (total + per_page - 1) // per_page
 
-
     # page 1 из 7:  следующая есть
     # page 2 из 7:  есть и предыдущая, и следующая
     # page 7 из 7:  предыдущая есть, следующей нет
@@ -250,7 +255,6 @@ def genre():
     )
 
 
-
 @app.route("/popular")
 def popular():
     try:
@@ -297,11 +301,12 @@ def recent():
         )
 
     except PyMongoError:
-          return render_template(
+        return render_template(
             "recent.html",
             results=[],
             error="Статистика временно недоступна."
         )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
