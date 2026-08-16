@@ -7,6 +7,8 @@ from search_service import (
     get_keyword_films_count,
 )
 
+import mysql.connector
+
 from mongo_logger import get_popular_searches, get_recent_searches, save_search_log
 
 from pymongo.errors import PyMongoError
@@ -28,84 +30,90 @@ def home():
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
+    try:
+        # Получаем номер текущей страницы из URL.
+        # Если page нет в URL — начинаем с первой страницы.
+        page = request.args.get("page", 1, type=int)
 
-    # Получаем номер текущей страницы из URL.
-    # Если page нет в URL — начинаем с первой страницы.
-    page = request.args.get("page", 1, type=int)
+        # Сколько фильмов показываем на одной странице.
+        per_page = RESULTS_PER_PAGE
 
-    # Сколько фильмов показываем на одной странице.
-    per_page = RESULTS_PER_PAGE
+        # Вычисляем, сколько фильмов нужно пропустить.
+        # Страница 1: offset=0, страница 2: offset=10, страница 3: offset=20.
+        offset = (page - 1) * per_page
 
-    # Вычисляем, сколько фильмов нужно пропустить.
-    # Страница 1: offset=0, страница 2: offset=10, страница 3: offset=20.
-    offset = (page - 1) * per_page
+        if request.method == "POST":
 
-    if request.method == "POST":
+            keyword = request.form["keyword"]
 
-        keyword = request.form["keyword"]
+            # Поиск при незаполненном ключевом слове
+            # или пробелах вместо слова.
+            if not keyword.strip():
+                return render_template(
+                    "search.html",
+                    error="Ключевое слово не может быть пустым"
+                )
 
-        # Поиск при незаполненном ключевом слове
-        # или пробелах вместо слова.
-        if not keyword.strip():
-            return render_template(
-                "search.html",
-                error="Ключевое слово не может быть пустым"
-            )
+        else:
 
-    else:
+            # Получаем ключевое слово из URL при переходе между страницами.
+            keyword = request.args.get("keyword")
 
-        # Получаем ключевое слово из URL при переходе между страницами.
-        keyword = request.args.get("keyword")
+            if not keyword:
+                return render_template("search.html")
 
-        if not keyword:
-            return render_template("search.html")
-
-    # Ищем фильмы в SQL-базе.
-    movies = search_by_keyword(
-        keyword,
-        per_page,
-        offset
-    )
-
-    # Получаем общее количество фильмов,
-    # найденных по ключевому слову.
-    total = get_keyword_films_count(keyword)
-
-    # Считаем, сколько страниц нужно для вывода всех фильмов.
-    total_pages = (total + per_page - 1) // per_page
-
-    # Определяем наличие кнопок навигации.
-    has_previous = page > 1
-    has_next = page < total_pages
-
-    # Если пользователь выполнил новый поиск,
-    # сохраняем его в MongoDB и переходим на первую страницу.
-    if request.method == "POST":
-
-        save_search_log(
-            "keyword",
-            {"keyword": keyword},
-            total
+        # Ищем фильмы в SQL-базе.
+        movies = search_by_keyword(
+            keyword,
+            per_page,
+            offset
         )
 
-        return redirect(
-            url_for(
-                "search",
-                keyword=keyword,
-                page=1
+        # Получаем общее количество фильмов,
+        # найденных по ключевому слову.
+        total = get_keyword_films_count(keyword)
+
+        # Считаем, сколько страниц нужно для вывода всех фильмов.
+        total_pages = (total + per_page - 1) // per_page
+
+        # Определяем наличие кнопок навигации.
+        has_previous = page > 1
+        has_next = page < total_pages
+
+        # Если пользователь выполнил новый поиск,
+        # сохраняем его в MongoDB и переходим на первую страницу.
+        if request.method == "POST":
+
+            save_search_log(
+                "keyword",
+                {"keyword": keyword},
+                total
             )
+
+            return redirect(
+                url_for(
+                    "search",
+                    keyword=keyword,
+                    page=1
+                )
+            )
+
+        return render_template(
+            "search.html",
+            keyword=keyword,
+            movies=movies,
+            total=total,
+            per_page=per_page,
+            page=page,
+            has_previous=has_previous,
+            has_next=has_next
+        )
+    except mysql.connector.Error:
+        return render_template(
+            "search.html",
+            error="Поиск временно недоступен."
         )
 
-    return render_template(
-        "search.html",
-        keyword=keyword,
-        movies=movies,
-        total=total,
-        per_page=per_page,
-        page=page,
-        has_previous=has_previous,
-        has_next=has_next
-    )
 
 @app.route("/genre", methods=["GET", "POST"])
 def genre():
@@ -119,8 +127,13 @@ def genre():
     # page 1: offset=0, page 2: offset=10, page 3: offset=20
     offset = (page - 1) * per_page
 
-
-    categories = get_categories()
+    try:
+        categories = get_categories()
+    except mysql.connector.Error:
+        return render_template(
+            "genre.html",
+            error="Поиск временно недоступен."
+        )
 
     if request.method == "POST":
 
@@ -155,21 +168,28 @@ def genre():
             year_to=year_to
         )
 
-    # Получаем фильмы из MySQL
-    movies = search_by_category(
-        category_id,
-        year_from,
-        year_to,
-        per_page,
-        offset
-    )
+    try:
+        # Получаем фильмы из MySQL
+        movies = search_by_category(
+            category_id,
+            year_from,
+            year_to,
+            per_page,
+            offset
+        )
 
-    # Получаем количество фильмов
-    total = get_category_films_count(
-        category_id,
-        year_from,
-        year_to
-    )
+        # Получаем количество фильмов
+        total = get_category_films_count(
+            category_id,
+            year_from,
+            year_to
+        )
+
+    except mysql.connector.Error:
+        return render_template(
+            "genre.html",
+            error="Поиск временно недоступен."
+        )
 
     # Считаем, сколько страниц нужно для выводна всех фильмоы
     # 60 фильмоы - 6 страниц, 61 фильм - 7 страниц...

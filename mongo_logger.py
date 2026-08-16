@@ -1,4 +1,3 @@
-import logging
 from datetime import datetime
 from functools import wraps
 from typing import Any
@@ -11,32 +10,12 @@ from local_settings import (
     DATABASE_WRITE,
     MONGODB_COLLECTION,
     MONGODB_URL_WRITE,
-    ERROR_LOG_PATH,
 )
 
-POPULAR_SEARCHES_LIMIT = 5
+from logger import logger
+
 POPULAR_SEARCHES_LIMIT = 5
 RECENT_SEARCHES_LIMIT = 5
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.ERROR)
-
-file_handler = logging.FileHandler(
-    ERROR_LOG_PATH,
-    encoding="utf-8",
-    delay=True   # Файл создается только при первой записи в лог
-)
-
-file_handler.setLevel(logging.ERROR)
-
-formatter = logging.Formatter(
-    "%(asctime)s | %(levelname)s | %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S")
-
-file_handler.setFormatter(formatter)
-
-if not logger.handlers:
-    logger.addHandler(file_handler)
 
 
 def connect() -> MongoClient:

@@ -2,6 +2,8 @@ import mysql.connector
 
 from local_settings import dbconfig
 
+from logger import logger
+
 # Поиск фильмов по ключевому слову
 GET_FILMS_BY_KEYWORD_QUERY = """
     SELECT title, description, release_year
@@ -105,6 +107,12 @@ def execute_query(query, params=()):
         cursor = connection.cursor(dictionary=True)
         cursor.execute(query, params)
         return cursor.fetchall()
+
+    except mysql.connector.Error as error:
+        logger.error(
+            f"Ошибка MySQL: {error}"
+        )
+        raise
 
     finally:
         if cursor:
