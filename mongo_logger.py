@@ -11,8 +11,10 @@ from local_settings import (
     DATABASE_WRITE,
     MONGODB_COLLECTION,
     MONGODB_URL_WRITE,
+    ERROR_LOG_PATH,
 )
 
+POPULAR_SEARCHES_LIMIT = 5
 POPULAR_SEARCHES_LIMIT = 5
 RECENT_SEARCHES_LIMIT = 5
 
@@ -20,7 +22,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
 file_handler = logging.FileHandler(
-    "error.log",
+    ERROR_LOG_PATH,
     encoding="utf-8",
     delay=True   # Файл создается только при первой записи в лог
 )
