@@ -24,34 +24,38 @@
         <h1 class="mb-4">
             Топ-5 популярных запросов
         </h1>
-        {% if results %}
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col">№</th>
-                            <th scope="col">Тип запроса</th>
-                            <th scope="col">Параметры</th>
-                            <th scope="col">Количество запросов</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in results %}
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>{{ item.search_type_description }}</td>
-                                <td>{{ item.search_description }}</td>
-                                <td>{{ item.requests_count }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% else %}
-            <div class="alert alert-secondary mb-0">
-                Популярных запросов пока нет.
-            </div>
-        {% endif %}
+{% if error %}
+    <div class="alert alert-danger mb-0">
+        {{ error }}
+    </div>
+{% elif results %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">Тип запроса</th>
+                    <th scope="col">Параметры</th>
+                    <th scope="col">Количество запросов</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in results %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.search_type_description }}</td>
+                        <td>{{ item.search_description }}</td>
+                        <td>{{ item.requests_count }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-secondary mb-0">
+        Популярных запросов пока нет.
+    </div>
+{% endif %}
     </div>
 </div>
 {% endblock %}

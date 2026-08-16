@@ -1,0 +1,8 @@
+2026-08-16 15:07:16 | ERROR | Ошибка MongoDB в функции get_popular_searches: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}
+2026-08-16 15:07:38 | ERROR | Ошибка MongoDB в функции get_recent_searches: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}
+2026-08-16 15:17:31 | ERROR | Ошибка MongoDB в функции get_popular_searches: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}
+2026-08-16 15:17:37 | ERROR | Ошибка MongoDB в функции get_recent_searches: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}
+2026-08-16 15:17:39 | ERROR | Ошибка MongoDB в функции get_popular_searches: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}
+2026-08-16 15:17:40 | ERROR | Ошибка MongoDB в функции get_recent_searches: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}
+2026-08-16 15:18:33 | ERROR | Ошибка MongoDB в функции save_search_log: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}
+2026-08-16 15:18:44 | ERROR | Ошибка MongoDB в функции get_popular_searches: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}

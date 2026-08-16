@@ -9,6 +9,8 @@ from search_service import (
 
 from mongo_logger import get_popular_searches, get_recent_searches, save_search_log
 
+from pymongo.errors import PyMongoError
+
 from formatters import (
     format_search_description,
     format_search_type,
@@ -231,40 +233,55 @@ def genre():
 
 @app.route("/popular")
 def popular():
+    try:
 
-    results = get_popular_searches()
+        results = get_popular_searches()
 
-    for item in results:
+        for item in results:
 
-        item["search_type_description"] = format_search_type(
-            item["search_type"]
+            item["search_type_description"] = format_search_type(
+                item["search_type"]
+            )
+
+            item["search_description"] = format_search_description(item)
+
+        return render_template(
+            "popular.html",
+            results=results
         )
 
-        item["search_description"] = format_search_description(item)
-
-    return render_template(
-        "popular.html",
-        results=results
-    )
+    except PyMongoError:
+        return render_template(
+            "popular.html",
+            results=[],
+            error="Статистика временно недоступна."
+        )
 
 
 @app.route("/recent")
 def recent():
+    try:
 
-    results = get_recent_searches()
+        results = get_recent_searches()
 
-    for item in results:
-        item["search_type_description"] = format_search_type(
-            item["search_type"]
+        for item in results:
+            item["search_type_description"] = format_search_type(
+                item["search_type"]
+            )
+
+            item["search_description"] = format_search_description(item)
+
+        return render_template(
+            "recent.html",
+            results=results
         )
 
-        item["search_description"] = format_search_description(item)
-
-    return render_template(
-        "recent.html",
-        results=results
-    )
-
+    except PyMongoError:
+          return render_template(
+            "recent.html",
+            results=[],
+            error="Статистика временно недоступна."
+        )
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -30,8 +30,8 @@ file_handler = logging.FileHandler(
 file_handler.setLevel(logging.ERROR)
 
 formatter = logging.Formatter(
-    "%(asctime)s %(levelname)s %(message)s"
-)
+    "%(asctime)s | %(levelname)s | %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S")
 
 file_handler.setFormatter(formatter)
 
@@ -65,7 +65,7 @@ def get_collection() -> tuple[MongoClient, Collection]:
     return client, collection
 
 
-def log_mongo_errors(default_return):
+def log_mongo_errors(default_return, raise_error=False):
     """
     Декоратор для обработки ошибок MongoDB.
 
@@ -73,6 +73,10 @@ def log_mongo_errors(default_return):
     записывает информацию об ошибке в лог
     и возвращает значение, указанное
     в параметре default_return.
+
+    Если raise_error=True, после записи ошибки
+    в лог исключение передаётся дальше вызывающему
+    коду.
     """
 
     def decorator(func):
@@ -84,6 +88,10 @@ def log_mongo_errors(default_return):
                 logger.error(
                     f"Ошибка MongoDB в функции {func.__name__}: {error}"
                 )
+
+                if raise_error:
+                    raise
+
                 return default_return
 
         return wrapper
@@ -135,7 +143,7 @@ def save_search_log(
             client.close()
 
 
-@log_mongo_errors([])
+@log_mongo_errors([], raise_error=True)
 def get_popular_searches() -> list[dict[str, Any]]:
     """
     Возвращает список из пяти самых популярных поисковых запросов.
@@ -143,6 +151,9 @@ def get_popular_searches() -> list[dict[str, Any]]:
     Популярность определяется частотой выполнения одинаковых запросов.
     Запрос считается одинаковым, если совпадают его тип (`search_type`)
     и параметры (`search_params`).
+
+    При ошибке MongoDB исключение передаётся вызывающему коду
+    для обработки на уровне приложения.
 
     :return: Список словарей с информацией о популярных поисковых
     запросах.
@@ -191,7 +202,7 @@ def get_popular_searches() -> list[dict[str, Any]]:
             client.close()
 
 
-@log_mongo_errors([])
+@log_mongo_errors([], raise_error=True)
 def get_recent_searches(limit: int = RECENT_SEARCHES_LIMIT) -> list[dict[str, Any]]:
     """
     Возвращает список последних уникальных поисковых запросов.
@@ -201,6 +212,9 @@ def get_recent_searches(limit: int = RECENT_SEARCHES_LIMIT) -> list[dict[str, An
     берется последняя по времени выполненная запись.
     Полученные запросы снова сортируются по времени
     и ограничиваются указанным количеством.
+
+    При ошибке MongoDB исключение передаётся вызывающему коду
+    для обработки на уровне приложения.
 
     :param limit: Максимальное количество уникальных запросов.
     :return: Список последних уникальных поисковых запросов.
