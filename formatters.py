@@ -1,6 +1,6 @@
 def format_search_params(item: dict) -> str:
     """
-    Формирует строку параметры поискового запроса в кратком виде.
+    Формирует строку параметров поискового запроса в кратком виде.
 
     :param item: словарь с информацией о поисковом запросе.
     :return: строка с параметрами поиска.
@@ -14,21 +14,13 @@ def format_search_params(item: dict) -> str:
     elif item["search_type"] == "category_name_and_year":
         return f'{p["category_name"]} ({p["year_from"]}-{p["year_to"]})'
 
-    # elif item["search_type"] == "genre":
-    #     return (
-    #         f'ID жанра: {p["category_id"]} '
-    #         f'({p["year_from"]}-{p["year_to"]})'
-    #     )
-
-    elif item["search_type"] == "category_id_and_year":
-        return f'{p["category_id"]} ({p["year_from"]}-{p["year_to"]})'
-
     return str(p)
 
 
 def format_search_description(item: dict) -> str:
     """
-    Возвращает поисковый запрос в удобном для пользователя виде.
+    Возвращает поисковый запрос для вывода в таблице статистики
+    в удобном для пользователя виде.
     """
 
     p = item["search_params"]
@@ -42,24 +34,12 @@ def format_search_description(item: dict) -> str:
             f'({p["year_from"]}-{p["year_to"]})'
         )
 
-    # elif item["search_type"] == "genre":
-    #     return (
-    #         f'Жанр: {p["category_name"]} '
-    #         f'({p["year_from"]}-{p["year_to"]})'
-    #     )
-
-    elif item["search_type"] == "category_id_and_year":
-        return (
-            f'ID жанра: {p["category_id"]} '
-            f'({p["year_from"]}-{p["year_to"]})'
-        )
-
     return str(p)
 
 
 def format_search_type(search_type: str) -> str:
     """
-    Возвращает тип поискового запроса
+    Возвращает тип поискового запроса для вывода в таблице статистики
     в понятном для пользователя виде.
     """
 
@@ -68,9 +48,6 @@ def format_search_type(search_type: str) -> str:
 
     if search_type == "category_name_and_year":
         return "По жанру и годам"
-
-    # if search_type == "genre":
-    #     return "По жанру"
 
     return search_type
 
