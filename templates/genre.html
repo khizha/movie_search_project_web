@@ -26,77 +26,76 @@
             Поиск фильмов по жанру и году
         </h1>
 
-        {% if not error %}
-            <form method="post">
-                <div class="mb-3">
+        <form method="post">
+            <div class="mb-3">
+                <label
+                    for="category"
+                    class="form-label"
+                >
+                    Выберите жанр:
+                </label>
+                <select
+                    name="category_id"
+                    id="category"
+                    class="form-select"
+                >
+                    {% for category in categories %}
+                    <option
+                        value="{{ category.category_id }}"
+                        data-first-year="{{ category.first_year }}"
+                        data-last-year="{{ category.last_year }}"
+                        {% if category.category_id|string == category_id|string %}selected{% endif %}
+                    >
+                        {{ category.category }}
+                        ({{ category.first_year }} - {{ category.last_year }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col">
                     <label
-                        for="category"
+                        for="year-from"
                         class="form-label"
                     >
-                        Выберите жанр:
+                        Год от:
                     </label>
-                    <select
-                        name="category_id"
-                        id="category"
-                        class="form-select"
+                    <input
+                        type="number"
+                        name="year_from"
+                        id="year-from"
+                        class="form-control"
+                        value="{{ year_from or '' }}"
+                        onkeydown="return false"
                     >
-                        {% for category in categories %}
-                        <option
-                            value="{{ category.category_id }}"
-                            data-first-year="{{ category.first_year }}"
-                            data-last-year="{{ category.last_year }}"
-                            {% if category.category_id|string == category_id|string %}selected{% endif %}
-                        >
-                            {{ category.category }}
-                            ({{ category.first_year }} - {{ category.last_year }})
-                        </option>
-                        {% endfor %}
-                    </select>
                 </div>
-
-                <div class="row mb-3">
-                    <div class="col">
-                        <label
-                            for="year-from"
-                            class="form-label"
-                        >
-                            Год от:
-                        </label>
-                        <input
-                            type="number"
-                            name="year_from"
-                            id="year-from"
-                            class="form-control"
-                            value="{{ year_from or '' }}"
-                            onkeydown="return false"
-                        >
-                    </div>
-                    <div class="col">
-                        <label
-                            for="year-to"
-                            class="form-label"
-                        >
-                            Год до:
-                        </label>
-                        <input
-                            type="number"
-                            name="year_to"
-                            id="year-to"
-                            class="form-control"
-                            value="{{ year_to or '' }}"
-                            onkeydown="return false"
-                        >
-                    </div>
+                <div class="col">
+                    <label
+                        for="year-to"
+                        class="form-label"
+                    >
+                        Год до:
+                    </label>
+                    <input
+                        type="number"
+                        name="year_to"
+                        id="year-to"
+                        class="form-control"
+                        value="{{ year_to or '' }}"
+                        onkeydown="return false"
+                    >
                 </div>
+            </div>
 
-                <button
-                    type="submit"
-                    class="btn btn-dark"
-                >
-                    Найти
-                </button>
-            </form>
-        {% endif %}
+            <button
+                type="submit"
+                class="btn btn-dark"
+            >
+                Найти
+            </button>
+        </form>
+
 
         {% if error %}
             <div
