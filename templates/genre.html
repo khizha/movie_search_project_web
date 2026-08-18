@@ -68,8 +68,7 @@
                             id="year-from"
                             class="form-control"
                             value="{{ year_from or '' }}"
-                            oninvalid="this.setCustomValidity('Год должен быть больше или равен ' + this.min)"
-                            oninput="this.setCustomValidity('')"
+                            onkeydown="return false"
                         >
                     </div>
                     <div class="col">
@@ -85,8 +84,7 @@
                             id="year-to"
                             class="form-control"
                             value="{{ year_to or '' }}"
-                            oninvalid="this.setCustomValidity('Год должен быть меньше или равен ' + this.max)"
-                            oninput="this.setCustomValidity('')"
+                            onkeydown="return false"
                         >
                     </div>
                 </div>
