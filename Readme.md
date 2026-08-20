@@ -93,20 +93,20 @@ movie_search_project_web/
 └── tests/                  # Автоматизированные тесты проекта
     ├── __init__.py                                      # Инициализация пакета тестов
     ├── test_formatters.py                               # Тесты функций форматирования данных
-    ├── test_genre.py                                    # Тесты поиска по жанру и диапазону лет
-    ├── test_genre_invalid_years.py                      # Тесты обработки некорректного диапазона лет
-    ├── test_get_categories_with_years.py                # Тесты получения категорий с диапазонами лет
-    ├── test_get_films_by_category_id_and_year.py        # Тесты поиска фильмов по категории и году
-    ├── test_get_films_by_keyword.py                     # Тесты поиска фильмов по ключевому слову
-    ├── test_get_films_count_by_category_id_and_year.py  # Тесты подсчёта фильмов по категории и году
-    ├── test_get_films_count_by_keyword.py               # Тесты подсчёта фильмов по ключевому слову
-    ├── test_get_popular_searches.py                     # Тесты получения популярных поисковых запросов
-    ├── test_get_recent_searches.py                      # Тесты получения последних поисковых запросов
-    ├── test_home.py                                     # Тесты главной страницы
-    ├── test_mongo_connection.py                         # Тесты подключения к MongoDB
-    ├── test_mysql_connection.py                         # Тесты подключения к MySQL
-    ├── test_search.py                                   # Тесты маршрута поиска фильмов
-    └── test_search_empty_keyword.py                     # Тесты обработки пустого поискового запроса
+    ├── test_genre.py                                    # Тест поиска по жанру и диапазону лет
+    ├── test_genre_invalid_years.py                      # Тест обработки некорректного диапазона лет
+    ├── test_get_categories_with_years.py                # Тест получения категорий с диапазонами лет
+    ├── test_get_films_by_category_id_and_year.py        # Тест поиска фильмов по категории и году
+    ├── test_get_films_by_keyword.py                     # Тест поиска фильмов по ключевому слову
+    ├── test_get_films_count_by_category_id_and_year.py  # Тест подсчёта фильмов по категории и году
+    ├── test_get_films_count_by_keyword.py               # Тест подсчёта фильмов по ключевому слову
+    ├── test_get_popular_searches.py                     # Тест получения популярных поисковых запросов
+    ├── test_get_recent_searches.py                      # Тест получения последних поисковых запросов
+    ├── test_home.py                                     # Тест главной страницы
+    ├── test_mongo_connection.py                         # Тест подключения к MongoDB
+    ├── test_mysql_connection.py                         # Тест подключения к MySQL
+    ├── test_search.py                                   # Тест маршрута поиска фильмов
+    └── test_search_empty_keyword.py                     # Тест обработки пустого поискового запроса
 
 ```
 ### Использование баз данных
