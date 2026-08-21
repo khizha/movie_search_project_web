@@ -56,6 +56,9 @@ def log_mongo_errors(default_return, raise_error=False):
     Если raise_error=True, после записи ошибки
     в лог исключение передаётся дальше вызывающему
     коду.
+
+    :param default_return: что вернуть при ошибке
+    :param raise_error: нужно ли передать ошибку дальше
     """
 
     def decorator(func):

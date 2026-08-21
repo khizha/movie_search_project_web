@@ -59,11 +59,13 @@ def search():
                     error="Ключевое слово не может быть пустым"
                 )
 
-        else:
+        else: # Переход по URL (GET)
 
             # Получаем ключевое слово из URL при переходе между страницами.
+            # http://127.0.0.1:5000/search?keyword=test&page=1
             keyword = request.args.get("keyword")
 
+            # еесли не keyword, возвращаемся на страницу поиска
             if not keyword:
                 return render_template("search.html")
 

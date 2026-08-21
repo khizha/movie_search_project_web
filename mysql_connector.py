@@ -101,7 +101,6 @@ def execute_query(query, params=()):
     connection = None
     cursor = None
 
-    # Закрываем соединение и курсор после выполнения запроса
     try:
         connection = connect()
         cursor = connection.cursor(dictionary=True)
